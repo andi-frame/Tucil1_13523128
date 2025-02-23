@@ -1,3 +1,4 @@
+import algorithm.BruteForce;
 import models.Block;
 import models.Board;
 import utils.InputHandler;
@@ -22,5 +23,7 @@ public class Main {
         Board board = InputHandler.parseBoard(lines);
         List<Block> blocks = InputHandler.parseBlock(lines);
 
+        BruteForce bf = new BruteForce(board, blocks);
+        bf.solve();
     }
 }

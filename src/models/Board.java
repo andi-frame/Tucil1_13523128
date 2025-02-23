@@ -18,9 +18,25 @@ public class Board {
     public void printBoard(){
         for (char[] row: board){
             for (char cell: row) {
-                System.out.print(cell == 0? '_' : cell);
+                System.out.print(cell == 0? '_' : cell + " ");
             }
             System.out.println();
         }
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public char getCell(int row, int col) {
+        return board[row][col];
+    }
+
+    public void setCell(int row, int col, char value) {
+        board[row][col] = value;
     }
 }
