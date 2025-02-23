@@ -9,7 +9,6 @@ public class BruteForce {
     private final Board board;
     private final List<Block> blocks;
     private int iterations = 0;
-    private boolean running = true;
 
     public BruteForce(Board board, List<Block> blocks) {
         this.board = board;
@@ -40,9 +39,15 @@ public class BruteForce {
         Block block = blocks.get(blockIndex);
         List<boolean[][]> orientations = block.getAllOrientations();
 
+        int maxRow = board.getRows();
+        int maxCol = board.getCols();
+
         for (boolean[][] orientation : orientations) {
-            for (int row = 0; row < board.getRows(); row++) {
-                for (int col = 0; col < board.getCols(); col++) {
+            int blockRows = orientation.length;
+            int blockCols = orientation[0].length;
+
+            for (int row = 0; row <= maxRow - blockRows; row++) {
+                for (int col = 0; col <= maxCol - blockCols; col++) {
                     if (canPlace(orientation, row, col)) {
                         place(orientation, block.getSymbol(), row, col);
                         iterations++;
@@ -61,7 +66,7 @@ public class BruteForce {
     private boolean canPlace(boolean[][] shape, int startRow, int startCol) {
         for (int i = 0; i < shape.length; i++) {
             for (int j = 0; j < shape[i].length; j++) {
-                if (shape[i][j] && (startRow + i >= board.getRows() || startCol + j >= board.getCols() || board.getCell(startRow + i, startCol + j) != 0)) {
+                if (shape[i][j] && board.getCell(startRow + i, startCol + j) != 0) {
                     return false;
                 }
             }

@@ -1,11 +1,14 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Block {
     private final char symbol;
     private final boolean[][] shape;
+    private List<boolean[][]> orientationsStore;
 
     public Block(char symbol, List<String> shape) {
         this.symbol = symbol;
@@ -35,16 +38,41 @@ public class Block {
     }
 
     public List<boolean[][]> getAllOrientations() {
+        if (orientationsStore != null) {
+            return orientationsStore;
+        }
+
+        Set<String> seenOrientations = new HashSet<>();
         List<boolean[][]> orientations = new ArrayList<>();
         boolean[][] currentShape = this.shape;
 
         for (int i = 0; i < 4; i++) {
-            orientations.add(currentShape);
-            orientations.add(mirror(currentShape));
+            addUniqueOrientation(currentShape, orientations, seenOrientations);
+            addUniqueOrientation(mirror(currentShape), orientations, seenOrientations);
             currentShape = rotate90(currentShape);
         }
 
+        orientationsStore = orientations;
         return orientations;
+    }
+
+    private void addUniqueOrientation(boolean[][] shape, List<boolean[][]> orientations, Set<String> seenOrientations) {
+        String shapeKey = shapeToString(shape);
+        if (!seenOrientations.contains(shapeKey)) {
+            orientations.add(shape);
+            seenOrientations.add(shapeKey);
+        }
+    }
+
+    private String shapeToString(boolean[][] shape) {
+        StringBuilder sb = new StringBuilder();
+        for (boolean[] row : shape) {
+            for (boolean cell : row) {
+                sb.append(cell ? '1' : '0');
+            }
+            sb.append('|');
+        }
+        return sb.toString();
     }
 
     private boolean[][] rotate90(boolean[][] shape) {

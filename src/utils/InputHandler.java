@@ -54,10 +54,25 @@ public class InputHandler {
 
             List<String> shape = new ArrayList<>();
             while (i < lines.size()) {
-                line = lines.get(i).trim();
-                if (line.isEmpty() || line.charAt(0) != symbol) {
+                line = lines.get(i);
+                if (line.trim().isEmpty()) {
                     break;
                 }
+
+                boolean isBlockLine = true;
+                for (int j = 0; j < line.length(); j++) {
+                    if (line.charAt(j) != ' ' && line.charAt(j) != symbol) {
+                        isBlockLine = false;
+                        break;
+                    }
+                }
+
+                if (!isBlockLine) {
+                    if (line.trim().charAt(0) != symbol) {
+                        break;
+                    }
+                }
+
                 shape.add(line);
                 i++;
             }
@@ -65,6 +80,7 @@ public class InputHandler {
             blocks.add(new Block(symbol, shape));
         }
 
+//        // Testing: Cetak semua blok
 //        System.out.println("TESTING:");
 //        for (Block block : blocks) {
 //            System.out.println("Blok " + block.getSymbol() + ":");
