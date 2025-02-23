@@ -15,7 +15,7 @@ public class InputHandler {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Masukkan path dari file test case: ");
         String filePath = scanner.nextLine();
-        filePath = "test/" + filePath;
+        filePath = "test/input/" + filePath;
         File file = new File(filePath);
         return file.exists() ? file : null;
     }

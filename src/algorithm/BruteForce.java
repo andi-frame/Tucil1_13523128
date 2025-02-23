@@ -2,6 +2,7 @@ package algorithm;
 
 import models.Block;
 import models.Board;
+import utils.OutputHandler;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class BruteForce {
         this.blocks = blocks;
     }
 
-    public void solve() {
+    public OutputHandler solve() {
         long start = System.currentTimeMillis();
         boolean solved = solveRecursive(0);
         long end = System.currentTimeMillis();
@@ -26,9 +27,11 @@ public class BruteForce {
         } else {
             System.out.println("Solusi tidak ditemukan!");
         }
-
-        System.out.println("Waktu pencarian: " + (end - start) + "ms");
+        long time = end - start;
+        System.out.println("Waktu pencarian: " + time + "ms");
         System.out.println("Banyak kasus: " + iterations);
+
+        return new OutputHandler(solved, time, iterations);
     }
 
     private boolean solveRecursive(int blockIndex) {
