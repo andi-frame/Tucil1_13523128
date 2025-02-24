@@ -6,9 +6,7 @@ import models.Board;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class InputHandler {
     public static File promptFile(){
@@ -41,12 +39,18 @@ public class InputHandler {
         int cols = Integer.parseInt(dimensions[1]);
         int pieces = Integer.parseInt(dimensions[2]);
 
+        if (pieces > 26) {
+            System.err.println("Jumlah blok/pieces hanya bisa kurang dari 26.");
+            return null;
+        }
+
         String type = lines.get(1);
         return new Board(rows, cols, pieces, type);
     }
 
     public static List<Block> parseBlock(List<String> lines) {
         List<Block> blocks = new ArrayList<>();
+        Set<Character> seenSymbols = new HashSet<>();
         int i = 2;
 
         while (i < lines.size()) {
@@ -57,6 +61,10 @@ public class InputHandler {
             }
 
             char symbol = line.charAt(0);
+            if (seenSymbols.contains(symbol)) {
+                System.err.println("Error: Blok '" + symbol + "' muncul berulang. Program dibatalkan.");
+                return List.of();
+            }
 
             List<String> shape = new ArrayList<>();
             while (i < lines.size()) {
@@ -84,6 +92,7 @@ public class InputHandler {
             }
 
             blocks.add(new Block(symbol, shape));
+            seenSymbols.add(symbol);
         }
 
         return blocks;

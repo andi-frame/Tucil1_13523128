@@ -38,6 +38,7 @@ public class IQPuzzlerGUI extends JFrame {
     public IQPuzzlerGUI() {
         setContentPane(panelMain);
         Font titleFont = new Font("SansSerif", Font.BOLD, 20);
+        Font descFont = new Font("SansSerif", Font.PLAIN, 12);
         labelTitle.setFont(titleFont);
         setTitle("Andi Frame's IQ Puzzler Pro GUI");
         setSize(1200, 800);
@@ -60,19 +61,31 @@ public class IQPuzzlerGUI extends JFrame {
                         File inputFile = InputHandler.promptFileGUI(txtInputPath.getText());
                         if (inputFile == null) {
                             JOptionPane.showMessageDialog(null, "File tidak ditemukan!", "Error", JOptionPane.ERROR_MESSAGE);
-                            labelSolved.setText("");
+                            labelSolved.setText("Status Idle");
                             return null;
                         }
 
                         java.util.List<String> lines = InputHandler.readFile(inputFile);
                         if (lines.isEmpty()) {
                             JOptionPane.showMessageDialog(null, "File kosong!", "Error", JOptionPane.ERROR_MESSAGE);
-                            labelSolved.setText("");
+                            labelSolved.setText("Status Idle");
                             return null;
                         }
 
                         board = InputHandler.parseBoard(lines);
                         blocks = InputHandler.parseBlock(lines);
+
+                        if (board == null){
+                            JOptionPane.showMessageDialog(null, "Terjadi masalah pada file input! \nJumlah blok/pieces hanya bisa kurang dari 26.", "Error", JOptionPane.ERROR_MESSAGE);
+                            labelSolved.setText("Status Idle");
+                            return null;
+                        }
+
+                        if (blocks.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Terjadi masalah pada pembacaan blok! \nSimbol blok tidak boleh berulang.", "Error", JOptionPane.ERROR_MESSAGE);
+                            labelSolved.setText("Status Idle");
+                            return null;
+                        }
 
                         BruteForce bf = new BruteForce(board, blocks);
                         long startTime = System.currentTimeMillis();
@@ -86,7 +99,8 @@ public class IQPuzzlerGUI extends JFrame {
 
                     @Override
                     protected void done() {
-                        // Update the GUI after the solver finishes
+                        solveButton.setEnabled(true);
+                        saveButton.setEnabled(true);
                         if (solved) {
                             labelSolved.setText("Solusi Ditemukan!\n");
                             updateTable(board);
@@ -95,10 +109,7 @@ public class IQPuzzlerGUI extends JFrame {
                             labelSolved.setText("Solusi tidak ditemukan!\n");
                         }
                         labelStatistik.setText(time + "ms dengan " + iterations + " percobaan.");
-                        Font descFont = new Font("SansSerif", Font.PLAIN, 12);
                         labelStatistik.setFont(descFont);
-                        solveButton.setEnabled(true);
-                        saveButton.setEnabled(true);
                     }
                 };
 
