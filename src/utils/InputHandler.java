@@ -20,6 +20,12 @@ public class InputHandler {
         return file.exists() ? file : null;
     }
 
+    public static File promptFileGUI(String filePath) {
+        filePath = "test/input/" + filePath;
+        File file = new File(filePath);
+        return file.exists() ? file : null;
+    }
+
     public static List<String> readFile(File file) {
         try {
             return Files.readAllLines(file.toPath());
@@ -79,20 +85,6 @@ public class InputHandler {
 
             blocks.add(new Block(symbol, shape));
         }
-
-//        // Testing: Cetak semua blok
-//        System.out.println("TESTING:");
-//        for (Block block : blocks) {
-//            System.out.println("Blok " + block.getSymbol() + ":");
-//            boolean[][] shape = block.getShape();
-//            for (boolean[] row : shape) {
-//                for (boolean cell : row) {
-//                    System.out.print(cell ? block.getSymbol() : '_');
-//                }
-//                System.out.println();
-//            }
-//            System.out.println();
-//        }
 
         return blocks;
     }

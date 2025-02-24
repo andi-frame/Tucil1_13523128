@@ -39,4 +39,17 @@ public class Board {
     public void setCell(int row, int col, char value) {
         board[row][col] = value;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                char cell = board[i][j];
+                sb.append(cell == 0 ? '_' : cell).append(' ');
+            }
+            sb.append('\n');
+        }
+        return sb.toString();
+    }
 }

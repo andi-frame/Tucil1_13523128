@@ -34,7 +34,7 @@ public class BruteForce {
         return new OutputHandler(solved, time, iterations);
     }
 
-    private boolean solveRecursive(int blockIndex) {
+    public boolean solveRecursive(int blockIndex) {
         if (blockIndex >= blocks.size()) {
             return true;
         }
@@ -95,5 +95,9 @@ public class BruteForce {
                 }
             }
         }
+    }
+
+    public int getIterations(){
+        return this.iterations;
     }
 }
