@@ -44,7 +44,6 @@ public class IQPuzzlerGUI extends JFrame {
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        panelOutput.setVisible(false);
         outputArea.setDefaultRenderer(Object.class, new NewCellRenderer());
         panelMain.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -62,6 +61,7 @@ public class IQPuzzlerGUI extends JFrame {
                         if (inputFile == null) {
                             JOptionPane.showMessageDialog(null, "File tidak ditemukan!", "Error", JOptionPane.ERROR_MESSAGE);
                             labelSolved.setText("Status Idle");
+                            solved = false;
                             return null;
                         }
 
@@ -69,6 +69,7 @@ public class IQPuzzlerGUI extends JFrame {
                         if (lines.isEmpty()) {
                             JOptionPane.showMessageDialog(null, "File kosong!", "Error", JOptionPane.ERROR_MESSAGE);
                             labelSolved.setText("Status Idle");
+                            solved = false;
                             return null;
                         }
 
@@ -78,12 +79,14 @@ public class IQPuzzlerGUI extends JFrame {
                         if (board == null){
                             JOptionPane.showMessageDialog(null, "Terjadi masalah pada file input! \nJumlah blok/pieces hanya bisa kurang dari 26.", "Error", JOptionPane.ERROR_MESSAGE);
                             labelSolved.setText("Status Idle");
+                            solved = false;
                             return null;
                         }
 
                         if (blocks.isEmpty()) {
                             JOptionPane.showMessageDialog(null, "Terjadi masalah pada pembacaan blok! \nSimbol blok tidak boleh berulang.", "Error", JOptionPane.ERROR_MESSAGE);
                             labelSolved.setText("Status Idle");
+                            solved = false;
                             return null;
                         }
 
@@ -104,7 +107,6 @@ public class IQPuzzlerGUI extends JFrame {
                         if (solved) {
                             labelSolved.setText("Solusi Ditemukan!\n");
                             updateTable(board);
-                            panelOutput.setVisible(true);
                         } else {
                             labelSolved.setText("Solusi tidak ditemukan!\n");
                         }
