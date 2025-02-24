@@ -33,9 +33,9 @@ public class NewCellRenderer extends DefaultTableCellRenderer {
             case 'C' -> Color.GREEN;
             case 'D' -> Color.YELLOW;
             case 'E' -> Color.ORANGE;
-            case 'F' -> Color.PINK;
-            case 'G' -> Color.CYAN;
-            case 'H' -> Color.MAGENTA;
+            case 'F' -> new Color(128, 128, 255);
+            case 'G' -> new Color(255, 128, 128);
+            case 'H' -> new Color(128, 255, 128);
             case 'I' -> new Color(128, 0, 128);
             case 'J' -> new Color(0, 128, 128);
             case 'K' -> new Color(128, 128, 0);
@@ -49,9 +49,9 @@ public class NewCellRenderer extends DefaultTableCellRenderer {
             case 'S' -> new Color(128, 0, 0);
             case 'T' -> new Color(0, 128, 0);
             case 'U' -> new Color(0, 0, 128);
-            case 'V' -> new Color(128, 128, 0);
-            case 'W' -> new Color(128, 0, 128);
-            case 'X' -> new Color(0, 128, 128);
+            case 'V' -> new Color(128, 128, 64);
+            case 'W' -> new Color(128, 64, 128);
+            case 'X' -> new Color(64, 128, 128);
             case 'Y' -> new Color(192, 192, 192);
             case 'Z' -> new Color(64, 64, 64);
             default -> Color.WHITE;

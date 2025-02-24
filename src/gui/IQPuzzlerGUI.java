@@ -50,38 +50,59 @@ public class IQPuzzlerGUI extends JFrame {
         solveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                File inputFile =  InputHandler.promptFileGUI(txtInputPath.getText());
-                if (inputFile == null) {
-                    JOptionPane.showMessageDialog(null, "File tidak ditemukan!", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+                labelSolved.setText("Loading...");
+                solveButton.setEnabled(false);
+                saveButton.setEnabled(false);
 
-                java.util.List<String> lines = InputHandler.readFile(inputFile);
-                if (lines.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "File kosong!", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+                SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+                    @Override
+                    protected Void doInBackground() throws Exception {
+                        File inputFile = InputHandler.promptFileGUI(txtInputPath.getText());
+                        if (inputFile == null) {
+                            JOptionPane.showMessageDialog(null, "File tidak ditemukan!", "Error", JOptionPane.ERROR_MESSAGE);
+                            labelSolved.setText("");
+                            return null;
+                        }
 
-                board = InputHandler.parseBoard(lines);
-                blocks = InputHandler.parseBlock(lines);
+                        java.util.List<String> lines = InputHandler.readFile(inputFile);
+                        if (lines.isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "File kosong!", "Error", JOptionPane.ERROR_MESSAGE);
+                            labelSolved.setText("");
+                            return null;
+                        }
 
-                BruteForce bf = new BruteForce(board, blocks);
-                long startTime = System.currentTimeMillis();
-                solved = bf.solveRecursive(0);
-                long endTime = System.currentTimeMillis();
-                time = (int) (endTime - startTime);
-                iterations = bf.getIterations();
+                        board = InputHandler.parseBoard(lines);
+                        blocks = InputHandler.parseBlock(lines);
 
-                if (solved) {
-                    labelSolved.setText("Solusi Ditemukan!\n");
-                    updateTable(board);
-                    panelOutput.setVisible(true);
-                } else {
-                    labelSolved.setText("Solusi tidak ditemukan!\n");
-                }
-                labelStatistik.setText(time + "ms dengan " + iterations + " percobaan.");
-                Font descFont = new Font("SansSerif", Font.PLAIN, 12);
-                labelStatistik.setFont(descFont);
+                        BruteForce bf = new BruteForce(board, blocks);
+                        long startTime = System.currentTimeMillis();
+                        solved = bf.solveRecursive(0);
+                        long endTime = System.currentTimeMillis();
+                        time = (int) (endTime - startTime);
+                        iterations = bf.getIterations();
+
+                        return null;
+                    }
+
+                    @Override
+                    protected void done() {
+                        // Update the GUI after the solver finishes
+                        if (solved) {
+                            labelSolved.setText("Solusi Ditemukan!\n");
+                            updateTable(board);
+                            panelOutput.setVisible(true);
+                        } else {
+                            labelSolved.setText("Solusi tidak ditemukan!\n");
+                        }
+                        labelStatistik.setText(time + "ms dengan " + iterations + " percobaan.");
+                        Font descFont = new Font("SansSerif", Font.PLAIN, 12);
+                        labelStatistik.setFont(descFont);
+                        solveButton.setEnabled(true);
+                        saveButton.setEnabled(true);
+                    }
+                };
+
+                worker.execute();
             }
         });
 
