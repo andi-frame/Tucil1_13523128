@@ -1,8 +1,8 @@
 5 11 12
 DEFAULT
-CC
-C
-CC
+YY
+Y
+YY
 W
 WW
  WW
